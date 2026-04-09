@@ -1,0 +1,72 @@
+encabezado:
+  numero_informe: 1
+  numero_contrato: 18-2026000001
+  nombre_contratista: Pepito Antonio Pérez Ocasio
+  inicio_periodo: 01/01/2026
+  fin_periodo: 02/02/2026
+objetivos:
+  descripcion: Durante el período reportado se habilitó la actualización autónoma de la información personal en la 
+    Hoja de Vida para empleados y profesores de cátedra, incluyendo variables socioeconómicas y demográficas. 
+    Esta mejora reduce la dependencia de procesos administrativos manuales y agiliza la disponibilidad de información actualizada 
+    para la toma de decisiones institucionales. Adicionalmente, se fortaleció la calidad y confiabilidad de los datos mediante 
+    validaciones según su estado y controles de acceso por rol, garantizando integridad en la edición. La solución incorpora 
+    una experiencia de usuario clara, con lenguaje incluyente y capacidades como gestión de imagen de perfil, mejorando la 
+    usabilidad y trazabilidad del sistema.
+evidencias:
+  - id: HU-042
+    tipo: Historia
+    requerimiento: Módulo de pagos PSE - integración
+    estado: Done
+    trazabilidad: Link taiga
+  - id: BUG-017
+    tipo: Bug
+    requerimiento: Error en validación de NIT
+    estado: Done
+    trazabilidad: Link GitLab (porque no tiene HU)
+  - id: SOP-004
+    tipo: Soporte
+    requerimiento: Capacitación equipo financiero
+    estado: Done
+    trazabilidad: Link taiga
+  - id: HU-666
+    tipo: Historia
+    requerimiento: Rediseño liquidador catedra
+    estado: Done
+    trazabilidad: Link taiga
+  - id: HU-123
+    tipo: Historia
+    requerimiento: Procesos en definitiva
+    estado: En curso
+    trazabilidad: Link taiga
+gestion:
+  soportes_incidentes:
+    descripcion: Durante el período se atendieron incidencias menores relacionadas con validaciones de formularios y 
+      consistencia en la visualización de datos en la Hoja de Vida. Estas fueron clasificadas como de baja a media 
+      criticidad y se resolvieron oportunamente sin afectar la operación de los usuarios finales. 
+      Asimismo, se brindó acompañamiento funcional para la correcta interpretación de los nuevos 
+      flujos de actualización de información.
+  deuda_refactorizacion:
+    descripcion: Se realizaron ajustes internos orientados a mejorar la mantenibilidad del código, especialmente en la 
+      gestión de validaciones y control de estados de edición. Adicionalmente, se estandarizaron componentes 
+      reutilizables para formularios y manejo de roles, facilitando su extensión en futuros desarrollos y reduciendo la 
+      duplicidad de lógica.
+  bloqueos:
+    descripcion: Se presentaron bloqueos asociados a la definición de reglas de negocio para la edición de información 
+      según su estado de validación, los cuales fueron resueltos mediante validaciones conjuntas con el equipo funcional. 
+      No se registran bloqueos técnicos persistentes que hayan impactado significativamente la entrega de valor del sprint.
+participacion_ceremonias:
+  descripcion: Durante el periodo reportado, participé activamente en las ceremonias de la metodología Scrum del equipo, 
+    incluyendo reuniones diarias (Daily), reunión semanal de avances (Weekly), planificación (Sprint Planning), 
+    retrospectiva (Retrospective) y, cuando fue requerido, revisión (Review) y refinamiento de backlog.
+    En estos espacios se realizó seguimiento al avance de las actividades, identificación de bloqueos, definición y 
+    priorización de historias de usuario, y mejora continua del proceso. Adicionalmente, mantuve actualizada la información 
+    de las tareas en la herramienta de gestión institucional (Taiga) y apoyé la elaboración de la documentación necesaria 
+    durante el desarrollo del sprint. Esta participación permitió mantener la alineación del equipo y asegurar el cumplimiento 
+    de las actividades asignadas. 
+firmas:
+  numero_documento_contratista: 123456789
+  firma_contratista: Ubicación de la imagen de la firma del contratista
+  nombre_lider_equipo: Ing. Karen Juliana Gómez Jaimes
+  nombre_supervisor_contrato: Ing. Karen Juliana Gómez Jaimes
+anexos:
+  - ubicacion: Ubicación con evidencias adicionales

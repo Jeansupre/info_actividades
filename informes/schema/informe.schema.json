@@ -1,0 +1,203 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["encabezado", "objetivos", "evidencias", "gestion", "participacion_ceremonias", "firmas"],
+    "properties": {
+        "encabezado": {
+            "type": "object",
+            "description": "Información general del informe",
+            "required": ["numero_informe", "numero_contrato", "nombre_contratista", "inicio_periodo", "fin_periodo"],
+            "properties": {
+                "numero_informe": {
+                    "type": "integer",
+                    "description": "Número del informe mensual",
+                    "minimum": 1
+                },
+                "numero_contrato": {
+                    "type": "string",
+                    "description": "Número del contrato"
+                },
+                "nombre_contratista": {
+                    "type": "string",
+                    "description": "Nombre completo del contratista"
+                },
+                "inicio_periodo": {
+                    "type": "string",
+                    "description": "Fecha de inicio del periodo (dd/mm/yyyy)",
+                    "pattern": "^\\d{2}/\\d{2}/\\d{4}$"
+                },
+                "fin_periodo": {
+                    "type": "string",
+                    "description": "Fecha de fin del periodo (dd/mm/yyyy)",
+                    "pattern": "^\\d{2}/\\d{2}/\\d{4}$"
+                }
+            }
+        },
+        "objetivos": {
+            "type": "object",
+            "description": "¿Por qué esta sección? \nEl objetivo es entregar valor al usuario y al negocio, no acumular tareas completadas. Permitir comprender el impacto real del sprint sin necesidad de revisar cada tarea individualmente. Reemplazar listas de actividades por comunicación de resultado. \nEquivale a: Actividades realizadas (Historias de Usuario) y las descripciones de actividades de cada HU",
+            "required": ["descripcion"],
+            "properties": {
+                "descripcion": {
+                    "type": "string",
+                    "description": "Descripción de los objetivos y resultados alcanzados durante el periodo del informe"
+                }
+            }
+        },
+        "evidencias": {
+            "type": "array",
+            "description": "¿Por qué esta sección? \nProvee trazabilidad sin duplicar información. Cada ítem contiene un único enlace a Taiga donde vive toda la evidencia: código, pruebas, revisiones de código y aprobaciones. \nDefinition of Done en RSI: Código revisado (MR aprobado) - Pruebas unitarias pasando - Sin issues críticos en análisis estático - Desplegado en ambiente de pruebas - Aprobado por el equipo. \nUn ítem marcado como “Done” cumple TODOS estos criterios. \nSolo se puede reportar una historia por informe, preferiblemente cuando esté finalizada.",
+            "items": {
+                "type": "object",
+                "required": ["id", "tipo", "requerimiento", "estado", "trazabilidad"],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Identificador de la actividad.  \nLos formatos válidos son: HU-XXX para Historias de Usuario, BUG-XXX para Bugs, SOP-XXX para Soporte (donde XXX es un número secuencial)"
+                    },
+                    "tipo": {
+                        "type": "string",
+                        "enum": ["Historia", "Bug", "Soporte"],
+                        "description": "Tipo de actividad"
+                    },
+                    "requerimiento": {
+                        "type": "string",
+                        "description": "Requerimiento asociado a la actividad"
+                    },
+                    "estado": {
+                        "type": "string",
+                        "enum": ["Done", "En curso"],
+                        "description": "Estado actual de la actividad"
+                    },
+                    "trazabilidad": {
+                        "type": "string",
+                        "description": "Link a documentación (Taiga, GitLab, etc.)"
+                    }
+                },
+                "allOf": [
+                    {
+                        "if": {
+                            "properties": { "tipo": { "const": "Historia" } }
+                        },
+                        "then": {
+                            "properties": {
+                                "id": {
+                                "pattern": "^HU-\\d+"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "if": {
+                            "properties": { "tipo": { "const": "Bug" } }
+                        },
+                        "then": {
+                            "properties": {
+                                "id": {
+                                "pattern": "^BUG-\\d+"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "if": {
+                            "properties": { "tipo": { "const": "Soporte" } }
+                        },
+                            "then": {
+                            "properties": {
+                                "id": {
+                                "pattern": "^SOP-\\d+"
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "gestion": {
+            "type": "object",
+            "description": "¿Por qué esta sección? \nEl trabajo no planificado (soporte, bugs, deuda técnica) impacta directamente la velocidad del equipo.",
+            "required": ["soportes_incidentes", "deuda_refactorizacion", "bloqueos"],
+            "properties": {
+                "soportes_incidentes": {
+                    "type": "object",
+                    "description": "Describa brevemente incidentes atendidos, su criticidad y resolución. \nEquivale a: Soporte, bugs, tickets e ítems, resumen agregado por tipo de incidente e impacto",
+                    "properties": {
+                        "descripcion": {
+                            "type": "string",
+                            "description": "Descripción de los soportes e incidentes gestionados"
+                        }
+                    }
+                },
+                "deuda_refactorizacion": {
+                    "type": "object",
+                    "description": "Trabajo técnico interno realizado (sin ser visible directamente en funcionalidades). \nImplícitamente incluido en Actividades de desarrollo (1) y DevTest (2)\nAhora se hace visible el trabajo técnico interno, que antes no se reportaba claramente \nPermite justificar esfuerzo que no genera funcionalidad directa",
+                    "properties": {
+                        "descripcion": {
+                            "type": "string",
+                            "description": "Descripción de la deuda tecnica o de la refactorización"
+                        }
+                    }
+                },
+                "bloqueos": {
+                    "type": "object",
+                    "description": "Bloqueos que afectaron la velocidad del equipo y cómo se resolvieron (o permanecen activos). \nMencionado indirectamente en daily y descripciones de actividades. \nSe documentan explícitamente para analizar impacto en velocidad y mejorar planificación futura",
+                    "properties": {
+                        "descripcion": {
+                            "type": "string",
+                            "description": "Descripción de los bloqueos relevantes identificados"
+                        }
+                    }
+                }
+            }
+        },
+        "participacion_ceremonias": {
+            "type": "object",
+            "description": "¿Por qué esta sección? \nLa participación activa en ceremonias es clave para la colaboración y alineación del equipo. \nPermite evidenciar el compromiso del contratista con las prácticas ágiles y su contribución a la dinámica del equipo.",
+            "required": ["descripcion"],
+            "properties": {
+                "descripcion": {
+                    "type": "string",
+                    "description": "Descripción de la participación en ceremonias ágiles (daily, sprint planning, retrospectives, etc.) y su impacto en el equipo"
+                }
+            }
+        },
+        "firmas": {
+            "type": "object",
+            "description": "Información de las firmas requeridas para la validación del informe",
+            "required": ["numero_documento_contratista", "firma_contratista"],
+            "properties": {
+                "numero_documento_contratista": {
+                    "type": "integer",
+                    "description": "Número de documento del contratista"
+                },
+                "firma_contratista": {
+                    "type": "string",
+                    "description": "Ubicación de la imagen de la firma del contratista"
+                },
+                "nombre_lider_equipo": {
+                    "type": "string",
+                    "description": "Nombre completo del líder del equipo"
+                },
+                "nombre_supervisor_contrato": {
+                    "type": "string",
+                    "description": "Nombre completo del supervisor del contrato"
+                }
+            }
+        },
+        "anexos": {
+            "type": "array",
+            "description": "En esta sección se incluyen evidencias complementarias, como registros fotográficos o capturas de pantalla, que soportan las actividades reportadas en el informe. \nSu incorporación es opcional y tiene como finalidad ampliar o ilustrar la información presentada, sin reemplazar la trazabilidad gestionada en las herramientas institucionales.",
+            "items": {
+                "type": "object",
+                "required": ["ubicacion"],
+                "properties": {
+                    "ubicacion": {
+                        "type": "string",
+                        "description": "Ubicación con evidencias adicionales"
+                    }
+                }
+            }
+        }
+    }
+}

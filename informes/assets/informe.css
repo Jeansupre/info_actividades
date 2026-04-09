@@ -1,0 +1,34 @@
+@page {
+    size: letter;
+    margin: 2.54cm;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+}
+
+.titulo {
+    padding: 10px;
+}
+
+.logo {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.subcelda-w150 {
+    padding: 5px;
+    width: 150px;
+    font-size: 10px;
+}
+
+.subcelda-w250 {
+    padding: 5px;
+    width: 250px;
+    font-size: 10px;
+}
