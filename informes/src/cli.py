@@ -4,6 +4,8 @@ import shutil
 import os
 import subprocess
 
+from informes.src.test_generar import generar_informe
+
 TEMPLATE_PATH = "informes/templates/default.yaml"
 DATA_FOLDER = "informes/data"
 
@@ -33,7 +35,6 @@ def crear_yaml(nombre: str):
     abrir_archivo(destino)
 
     print(f"✅ YAML creado: {destino}")
-
 
 def abrir_archivo(ruta: str):
     """
@@ -69,8 +70,11 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command")
 
     # Comando nuevo
-    nuevo_parser = subparsers.add_parser("nuevo", help="Crear nuevo archivo YAML")
-    nuevo_parser.add_argument("nombre", help="Nombre del archivo (ej: 2026-04)")
+    comando_nuevo = subparsers.add_parser("nuevo", help="Crear nuevo archivo YAML")
+    comando_nuevo.add_argument("nombre", help="Nombre del archivo (ej: 2026-04)")
+    # Comando generar
+    comando_generar = subparsers.add_parser("generar", help="Generar PDF a partir del YAML")
+    comando_generar.add_argument("nombre", help="Nombre del archivo YAML a usar (ej: 2026-03)")
 
     return parser
 
@@ -80,5 +84,7 @@ def run():
     args = parser.parse_args()
     if args.command == "nuevo":
         crear_yaml(args.nombre)
+    elif args.command == "generar":
+        generar_informe(args.nombre)
     else:
         parser.print_help()

@@ -1,28 +1,42 @@
 import yaml
 import os
+import subprocess
 from jinja2 import Environment, FileSystemLoader
-import pdfkit
+import shutil
 
-# 1. Configurar rutas
-BASE_DIR = os.path.abspath(".")
-TEMPLATES_DIR = os.path.join(BASE_DIR, "informes/templates")
+def generar_informe(nombre_yaml: str):
+    if not shutil.which("typst"):
+        raise Exception("❌ Typst no está instalado o no está en el PATH")
 
-# 2. Cargar template
-env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
-template = env.get_template("informe.html")
+    BASE_DIR = os.path.abspath(".")
+    TEMPLATES_DIR = os.path.join(BASE_DIR, "informes/templates")
+    OUTPUT_DIR = os.path.join(BASE_DIR, "informes/output")
 
-# 3. Cargar YAML
-with open("informes/data/2026-03.yaml", encoding="utf-8") as f:
-    data = yaml.safe_load(f)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# 4. Renderizar HTML
-html_renderizado = template.render(data)
+    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
+    template = env.get_template("informe.typ.j2")
 
-# (Opcional) guardar HTML para debug
-with open("informes/output/debug.html", "w", encoding="utf-8") as f:
-    f.write(html_renderizado)
+    # Cargar YAML
+    with open(f"informes/data/{nombre_yaml}.yaml", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
 
-# 5. Generar PDF
-pdfkit.from_string(html_renderizado, "informes/output/reporte.pdf")
+    # Renderizar Typst
+    typ_content = template.render(data)
 
-print("✅ PDF generado en informes/output/reporte.pdf")
+    # Guardar .typ
+    typ_path = os.path.join(OUTPUT_DIR, f"{nombre_yaml}.typ")
+    with open(typ_path, "w", encoding="utf-8") as f:
+        f.write(typ_content)
+
+    # Generar PDF
+    subprocess.run([
+        "typst",
+        "compile",
+        "--root",
+        BASE_DIR,
+        typ_path,
+        os.path.join(OUTPUT_DIR, f"{nombre_yaml}.pdf")
+    ])
+
+    print("✅ PDF generado con Typst")

@@ -1,0 +1,50 @@
+#import table: cell, header
+
+#set page("us-letter", margin: 2.54cm)
+#set text(font: "Arial", size: 11pt)
+#set heading(numbering: "1")
+
+#show heading.where(level: 1): it => [
+  #text(weight: "bold")[
+    Sección #it.numbering: #it.body
+  ]
+]
+
+
+#table(
+  columns: (4.02cm, 4.06cm, 8.43cm),
+  align: horizon,
+  header(cell(colspan: 3)[
+    #align(center)[
+      #text(size: 18pt, weight: "bold")[
+        INFORME DE ACTIVIDADES
+      ]
+      #linebreak()
+      #text(weight: "bold")[
+        DIVISIÓN DE TECNOLOGÍAS DE LA INFORMACIÓN Y LA COMUNICACIÓN - DTIC
+      ]
+    ] 
+  ]),
+  //fila 1
+  cell(rowspan: 4)[
+    #align(center)[#image("../assets/logo_uis.png")]
+  ],
+  [*Informe No.*],
+  [{{ encabezado.numero_informe }}],
+  
+  //fila 2
+  [*Contrato No.*],
+  [{{ encabezado.numero_contrato }}],
+
+  //fila 3
+  [*Contratista:*],
+  [{{ encabezado.nombre_contratista }}],
+
+  //fila 4
+  [*Período:*],
+  [{{ encabezado.inicio_periodo }} al {{ encabezado.fin_periodo }}],
+)
+
+= Objetivos y resultados
+#line(length: 100%)
+{{ objetivos.descripcion }}
