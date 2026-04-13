@@ -2,18 +2,19 @@
 
 #set page("us-letter", margin: 2.54cm)
 #set text(font: "Arial", size: 11pt)
-#set heading(numbering: "1")
-
-#show heading.where(level: 1): it => [
-  #text(weight: "bold")[
-    Sección #it.numbering: #it.body
-  ]
-]
-
+#set heading(numbering: (..nums) => {
+  let n = nums.pos()
+  if n.len() == 1 {
+    "Sección " + str(n.at(0)) + ":"
+  } else {
+    numbering("1.1", ..n)
+  }
+})
 
 #table(
   columns: (4.02cm, 4.06cm, 8.43cm),
   align: horizon,
+  stroke: 0.25pt,
   header(cell(colspan: 3)[
     #align(center)[
       #text(size: 18pt, weight: "bold")[
@@ -29,22 +30,203 @@
   cell(rowspan: 4)[
     #align(center)[#image("../assets/logo_uis.png")]
   ],
-  [*Informe No.*],
+  cell(fill: gray.lighten(60%))[*Informe No.*],
   [{{ encabezado.numero_informe }}],
   
   //fila 2
-  [*Contrato No.*],
+  cell(fill: gray.lighten(60%))[*Contrato No.*],
   [{{ encabezado.numero_contrato }}],
 
   //fila 3
-  [*Contratista:*],
+  cell(fill: gray.lighten(60%))[*Contratista:*],
   [{{ encabezado.nombre_contratista }}],
 
   //fila 4
-  [*Período:*],
+  cell(fill: gray.lighten(60%))[*Período:*],
   [{{ encabezado.inicio_periodo }} al {{ encabezado.fin_periodo }}],
 )
+#v(10pt)
 
 = Objetivos y resultados
 #line(length: 100%)
 {{ objetivos.descripcion }}
+#v(10pt)
+
+= Evidencias y trazabilidad de actividades
+#line(length: 100%)
+#table(
+  columns: (1.96cm, 1.75cm, 5.93cm, 2.82cm, 4.05cm),
+  align: (center, center, left, center, left),
+  stroke: 0.25pt,
+  header(
+    cell(fill: gray.lighten(60%))[#align(center)[#text(size: 10pt, weight: "bold")[ID]]],
+    cell(fill: gray.lighten(60%))[#align(center)[#text(size: 10pt, weight: "bold")[Tipo]]],
+    cell(fill: gray.lighten(60%))[#align(center)[#text(size: 10pt, weight: "bold")[Requerimiento]]],
+    cell(fill: gray.lighten(60%))[#align(center)[#text(size: 10pt, weight: "bold")[Estado]]],
+    cell(fill: gray.lighten(60%))[#align(center)[#text(size: 10pt, weight: "bold")[Trazabilidad]]]
+  ),
+
+  {% for ev in evidencias %}
+  //fila {{ loop.index }}
+    [#text(size: 10pt)[{{ ev.id }}]],
+    [#text(size: 10pt)[{{ ev.tipo }}]],
+    [#text(size: 10pt)[{{ ev.requerimiento }}]],
+    [
+      {% if ev.estado == "Done" %}
+        #text(weight: "bold", fill: green)[#text(size: 10pt)[{{ ev.estado }}]]
+      {% else %}
+        #text(weight: "bold", fill: orange)[#text(size: 10pt)[{{ ev.estado }}]]
+      {% endif %}
+    ],
+    [#text(size: 10pt)[{{ ev.trazabilidad }}]],
+  {% endfor %}
+)
+#v(10pt)
+
+= Gestión operativa y soporte
+#line(length: 100%)
+== Soporte e incidentes
+{{gestion.soportes_incidentes.descripcion}}
+#v(5pt)
+
+== Deuda técnica y refactorización
+{{gestion.deuda_refactorizacion.descripcion}}
+#v(5pt)
+
+== Bloqueos relevantes
+{{gestion.bloqueos.descripcion}}
+#v(5pt)
+
+= Participación en Ceremonias
+#line(length: 100%)
+{{participacion_ceremonias.descripcion}}
+#v(40pt)
+
+#let firma_contratista(nombre, numero_documento) = [
+  #v(50pt)
+  #line(length: 90%)
+  #v(-6pt)
+  #align(left)[
+    #text(size: 10pt)[
+      {{encabezado.nombre_contratista}}
+    ]
+    #linebreak()
+    #text(size: 10pt)[
+      C.C {{firmas.numero_documento_contratista}}
+    ]
+  ]
+]
+
+// tabla contratista-lider-supervisor
+#let tabla_contratista_lider_supervisor() = [
+  #table(
+    columns: (7.94cm, 8.57cm),
+    align: left,
+    stroke: 0.25pt,
+    header(
+      cell(fill: gray.lighten(60%))[#align(center)[#text(size: 10pt, weight: "bold")[CONTRATISTA]]],
+      cell(fill: gray.lighten(60%))[#align(center)[#text(size: 10pt, weight: "bold")[LIDER DE EQUIPO]]]
+    ),
+
+    // firma contratista
+    [
+      #firma_contratista("{{encabezado.nombre_contratista}}", "{{firmas.numero_documento_contratista}}")
+    ],
+
+    // firma líder de equipo
+    [
+      #v(50pt)
+      #line(length: 90%)
+      #v(-6pt)
+      #align(left)[
+        #text(size: 10pt, weight: "bold")[
+          {{firmas.nombre_lider_equipo}}
+        ]
+        #linebreak()
+        #text(size: 10pt)[
+          Profesional DTIC
+        ]
+      ]
+    ],
+
+    // firma supervisor
+    cell(colspan: 2, fill: gray.lighten(60%))[
+      #align(center)[
+        #text(size: 10pt, weight: "bold")[
+          SUPERVISOR
+        ]
+      ]
+    ],
+    cell(colspan: 2)[
+      #v(50pt)
+      #align(center)[
+        #line(length: 60%)
+        #v(-6pt)
+        #text(size: 10pt, weight: "bold")[
+          {{firmas.nombre_supervisor_contrato}}
+        ]
+        #linebreak()
+        #text(size: 10pt)[
+          Supervisor del Contrato
+        ]
+      ]
+    ],
+  )
+]
+
+// tabla contratista-supervisor
+#let tabla_contratista_supervisor() = [
+  #table(
+    columns: (7.94cm, 8.57cm),
+    align: left,
+    stroke: 0.25pt,
+    header(
+      cell(fill: gray.lighten(60%))[#align(center)[#text(size: 10pt, weight: "bold")[CONTRATISTA]]],
+      cell(fill: gray.lighten(60%))[#align(center)[#text(size: 10pt, weight: "bold")[SUPERVISOR]]]
+    ),
+
+    // firma contratista
+    [
+      #firma_contratista("{{encabezado.nombre_contratista}}", "{{firmas.numero_documento_contratista}}")
+    ],
+
+    // firma supervisor
+    [
+      #v(50pt)
+      #line(length: 90%)
+      #v(-6pt)
+      #align(left)[
+        #text(size: 10pt, weight: "bold")[
+          {{firmas.nombre_supervisor_contrato}}
+        ]
+        #linebreak()
+        #text(size: 10pt)[
+          Supervisor del Contrato
+        ]
+      ]
+    ]
+  )
+]
+
+{% if firmas.nombre_lider_equipo %}
+#tabla_contratista_lider_supervisor()
+{% else %}
+#tabla_contratista_supervisor()
+{% endif %}
+
+#v(-8pt)
+#text(size: 10pt, style: "italic", fill: black.lighten(30%))[
+  Al firmar este documento, las partes certifican que la información reportada es veraz y que las actividades descritas corresponden al período contractual indicado.
+]
+#v(30pt)
+
+{% if anexos | selectattr("imagenes") | list | length > 0 %}
+= Anexos
+#line(length: 100%)
+  {% for anexo in anexos %}
+    {% for img in anexo.imagenes %}
+      #text(size: 10pt)[Figura {{ loop.index }}]
+      #image("{{ img }}", width: 100%)
+    {% endfor %}
+  {% endfor %}
+{% endif %}

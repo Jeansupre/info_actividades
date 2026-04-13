@@ -194,7 +194,7 @@
                 "properties": {
                     "ubicacion": {
                         "type": "string",
-                        "description": "Ubicación con evidencias adicionales"
+                        "description": "Ruta de acceso relativa de la carpeta donde está almacenada la evidencia adicional, esta carpeta debe estar dentro del root del proyecto, en este caso la carpeta informes. \nSe recomienda guardar las carpetas de las imagenes o directamente las imagenes en la carpeta anexos (ejemplo: informes\\assets\\anexos, informes\\assets\\anexos\\2026-03\\)"
                     }
                 }
             }
