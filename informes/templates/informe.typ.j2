@@ -11,6 +11,8 @@
   }
 })
 
+#show link: underline
+
 #table(
   columns: (4.02cm, 4.06cm, 8.43cm),
   align: horizon,
@@ -78,7 +80,7 @@
         #text(weight: "bold", fill: orange)[#text(size: 10pt)[{{ ev.estado }}]]
       {% endif %}
     ],
-    [#text(size: 10pt)[{{ ev.trazabilidad }}]],
+    [#text(size: 10pt)[#text(fill: blue)[#link("{{ ev.trazabilidad }}")[Link]]]],
   {% endfor %}
 )
 #v(10pt)
