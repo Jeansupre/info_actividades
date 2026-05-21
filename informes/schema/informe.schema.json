@@ -57,7 +57,7 @@
                     },
                     "tipo": {
                         "type": "string",
-                        "enum": ["Historia", "Bug", "Soporte"],
+                        "enum": ["Historia", "Bug", "Soporte", "Devtest", "Refactor"],
                         "description": "Tipo de actividad"
                     },
                     "requerimiento": {

@@ -205,3 +205,8 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Generated report data and outputs
+informes/data/*
+informes/output/*
+informes/actividades_periodos/*

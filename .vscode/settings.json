@@ -1,8 +1,12 @@
 {
     "yaml.schemas": {
-        "./informes/schema/informe.schema.json": "data/*.yaml"
+        "./informes/schema/informe.schema.json": ["data/*.yaml", "templates/*.yaml"]
     },
     "python.analysis.extraPaths": [
         "./informes"
-    ]
+    ],
+    "workbench.colorCustomizations": {
+        "statusBar.noFolderBackground": "#551913",
+        "statusBar.noFolderForeground": "#FEFCFC"
+    }
 }
