@@ -27,6 +27,7 @@ Este proyecto genera PDFs a partir de archivos YAML.
 - Los campos deben cumplir schema.json.
 - Mantener fechas en formato DD-MM-YYYY.
 - Los resúmenes deben ser técnicos.
+- Los números que acompañan los prefiejos en la columna ID deben ser los mismos que el número de la HU o del merge request correspondiente.
 
 # Relación informe -> campos
 
