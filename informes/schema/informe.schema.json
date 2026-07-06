@@ -110,6 +110,30 @@
                                 }
                             }
                         }
+                    },
+                    {
+                        "if": {
+                            "properties": { "tipo": { "const": "Devtest" } }
+                        },
+                        "then": {
+                            "properties": {
+                                "id": {
+                                    "pattern": "^TEST-\\d+"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "if": {
+                            "properties": { "tipo": { "const": "Refactor" } }
+                        },
+                        "then": {
+                            "properties": {
+                                "id": {
+                                    "pattern": "^REF-\\d+"
+                                }
+                            }
+                        }
                     }
                 ]
             }

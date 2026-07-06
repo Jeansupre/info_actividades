@@ -27,7 +27,9 @@ Este proyecto genera PDFs a partir de archivos YAML.
 - Los campos deben cumplir schema.json.
 - Mantener fechas en formato DD-MM-YYYY.
 - Los resúmenes deben ser técnicos.
-- Los números que acompañan los prefiejos en la columna ID deben ser los mismos que el número de la HU o del merge request correspondiente.
+- Los números que acompañan los prefiejos, según el tipo de evidencia, en la columna ID deben ser los mismos que el número de la HU o del merge request correspondiente.
+- En la tabla de trazabilidad no tengas encuenta los feats sueltos que no estén asociados a una HU o a un merge request, aunque hayan sido parte de las actividades del periodo.
+- En la tabla de trazabilidad debes poner todas las HUs indicadas en el informe.
 
 # Relación informe -> campos
 
