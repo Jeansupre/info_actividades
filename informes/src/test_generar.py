@@ -6,9 +6,27 @@ import shutil
 
 import os
 
+def formato_pesos(valor):
+    if valor is None or valor == "":
+        return ""
+
+    if isinstance(valor, str):
+        valor = (
+            valor
+            .replace("$", "")
+            .replace(".", "")
+            .replace(",", "")
+            .strip()
+        )
+
+    valor = int(float(valor))
+
+    return f"{valor:,}".replace(",", ".")
+
 def obtener_imagenes(ruta, output_dir):
     extensiones = (".png", ".jpg", ".jpeg")
     imagenes = []
+    print(f"Buscando imágenes en: {ruta}")
     for f in os.listdir(ruta):
         if f.lower().endswith(extensiones):
             try:
@@ -24,24 +42,28 @@ def generar_informe(nombre_yaml: str):
         raise Exception("❌ Typst no está instalado o no está en el PATH")
 
     BASE_DIR = os.path.abspath(".")
+    FONT_PATH = os.path.join(BASE_DIR, "informes/assets/fuentes")
     TEMPLATES_DIR = os.path.join(BASE_DIR, "informes/templates")
     OUTPUT_DIR = os.path.join(BASE_DIR, "informes/output")
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
-    template = env.get_template("informe.typ.j2")
+    env.filters["pesos"] = formato_pesos
+    template = env.get_template("informe_fco76.typ.j2")
 
     # Cargar YAML
     with open(f"informes/data/{nombre_yaml}.yaml", encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
     #Añadir imágenes de anexos al contexto
-    anexos = data.get("anexos", [])
-    for anexo in anexos:
-        ruta = anexo.get("ubicacion")
-        if ruta:
-            anexo["imagenes"] = obtener_imagenes(ruta, OUTPUT_DIR)
+    anexos = data.get("anexos", {})
+    ruta = anexos["ubicacion"]
+    if ruta:
+        anexos["imagenes"] = obtener_imagenes(ruta, OUTPUT_DIR)
+
+    print(anexos)
+    print(data["anexos"]["imagenes"])
 
     # Renderizar Typst
     typ_content = template.render(data)
@@ -57,6 +79,8 @@ def generar_informe(nombre_yaml: str):
         "compile",
         "--root",
         BASE_DIR,
+        "--font-path",
+        FONT_PATH,
         typ_path,
         os.path.join(OUTPUT_DIR, f"{nombre_yaml}.pdf")
     ])

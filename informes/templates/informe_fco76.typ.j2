@@ -1,0 +1,288 @@
+#import table: cell, header
+
+// ============================================================
+// FCO.76 - Informe de cumplimiento de actividades y
+// cumplimiento de obligaciones administrativas del contratista
+// Plantilla Typst + Jinja2
+// ============================================================
+
+#set page(
+  "us-letter",
+  margin: (top: 1.76cm + 1.25cm, bottom: 1.76cm, left: 1.76cm, right: 2.09cm),
+  header: [
+    #table(
+      columns: (3.73cm, 11.01cm, 2.98cm),
+      rows: (0.73cm, 0.365cm, 0.365cm),
+      stroke: 0.5pt,
+      align: (center + horizon, center + horizon, center + horizon),
+
+      //Imagen del logo UIS
+      cell(rowspan: 3)[
+        #align(center)[#image("../assets/logo_uis.png", width: 2.59cm, height: 1.39cm, fit: "contain")]
+      ],
+
+      // Fila 1
+      cell()[#text(size: 9pt, weight: "bold")[PROCESO CONTRATACIÓN]],
+      cell()[#text(weight: "bold")[Código: FCO.76]],
+
+      //Fila 2
+      cell(rowspan: 2)[
+        #text(size: 9pt, weight: "bold")[
+          INFORME DE CUMPLIMIENTO DE ACTIVIDADES Y CUMPLIMIENTO DE 
+          OBLIGACIONES ADMINISTRATIVAS DEL CONTRATISTA
+        ]
+      ],
+      cell()[
+        #text(weight: "bold")[Versión: 01]
+      ],
+      cell()[
+        #context [#text(weight: "bold")[Página: #counter(page).display() de 4]]
+      ],
+    )
+  ],
+  header-ascent: 15%
+)
+
+#set text(font: "Calibri", size: 8pt)
+#set heading(numbering: none)
+#show link: underline
+
+#let gris = gray.lighten(60%)
+#let gris-relleno = rgb("#E8E8E8")
+#let gris-texto = rgb("#808080")
+#let campo_label(texto) = [#text(weight: "bold")[#texto]]
+#let placeholder(texto) = [#text(style: "italic", fill: gris-texto)[#texto]]
+
+#let titulo_seccion(texto) = [
+  #table(
+    columns: 17.73cm,
+    stroke: 0.5pt,
+    [#align(center + horizon)[#text(weight: "bold")[#texto]]],
+    fill: gris-relleno
+  )
+  #v(0.15cm)
+]
+
+#align(center)[#text(weight: "bold", style: "italic", fill: gris-texto)[Aplica ] #placeholder("a: 18 - Orden de prestación de servicios · 270 - Registro contractual · 450 - Orden de consultoría. Este informe se anexa al acta de pago (FCO.62,
+ FCO.69 o FCO.74).")]
+
+// ============================================================
+// 1. INFORMACIÓN GENERAL
+// ============================================================
+
+#titulo_seccion("1. INFORMACIÓN GENERAL")
+
+#table(
+  columns: (4.18cm, 0.64cm, 0.82cm, 0.89cm, 0.88cm, 0.89cm, 2.01cm, 4.77cm, 2.64cm),
+  rows: (0.53cm, 1.06cm, 0.53cm, 0.53cm, 1.2cm, 1.59cm),
+  stroke: 0.5pt,
+  align: center + horizon,
+  cell(fill: gris-relleno)[#align(left + horizon)[#campo_label("Fecha de elaboración")]],
+  cell(fill: gris-relleno)[#text(weight: "bold")[Día]], [{{ general.fecha_elaboracion.dia }}],
+  cell(fill: gris-relleno)[#text(weight: "bold")[Mes]], [{{ general.fecha_elaboracion.mes }}],
+  cell(fill: gris-relleno)[#text(weight: "bold")[Año]], [{{ general.fecha_elaboracion.anio }}],
+  cell(fill: gris-relleno)[#align(left + horizon)[#campo_label("Informe N.º")]], [{{ general.numero_informe }}],
+
+  cell(fill: gris-relleno)[#align(left + horizon)[#campo_label("Periodo de Seguimiento del informe")]],
+  cell(colspan: 8)[#align(center)[#text(style: "italic")[Del {{ general.inicio_periodo }} al {{ general.fin_periodo }}]]],
+
+  cell(fill: gris-relleno)[#align(left + horizon)[#campo_label("Contrato N.º")]],
+  cell(colspan: 8)[#align(center)[#text(style: "italic")[{{ general.numero_contrato }}]]],
+
+  cell(fill: gris-relleno)[#align(left + horizon)[#campo_label("Contratista")]],
+  cell(colspan: 8)[#align(center)[#text(style: "italic")[{{ general.nombre_contratista }}]]],
+
+  cell(fill: gris-relleno)[#align(left + horizon)[#campo_label("Objeto del contrato")]],
+  cell(colspan: 8)[#align(center)[#text(style: "italic")[{{ general.objeto_contrato }}]]],
+
+  cell(fill: gris-relleno)[#align(left + horizon)[#campo_label("Valor por pagar")]],
+  cell(colspan: 4)[
+    #align(center + horizon)[
+      #text("$"){{ general.valor_por_pagar | pesos}}
+    ]
+  ],
+  cell(fill: gris-relleno, colspan: 2)[#align(horizon)[#campo_label("Porcentaje de pago ejecutado")]],
+  cell(colspan: 2)[
+    #align(center + horizon)[
+      {{ general.porcentaje_pago_ejecutado }}
+    ]
+  ],
+)
+
+#v(0.22cm)
+
+// ============================================================
+// 2. INFORME DETALLADO DE OBLIGACIONES, ACTIVIDADES Y EVIDENCIAS
+// ============================================================
+
+#titulo_seccion("2. INFORME DETALLADO DE OBLIGACIONES, ACTIVIDADES Y EVIDENCIAS")
+
+#table(
+  columns: (0.67cm, 5.55cm, 6cm, 5.51cm),
+  stroke: 0.5pt,
+  align: center + horizon,
+  header(
+    cell(fill: gris)[#text(weight: "bold")[N.º]],
+    cell(fill: gris)[#text(weight: "bold")[ACTIVIDAD CONTRACTUAL]],
+    cell(fill: gris)[#text(weight: "bold")[ACTIVIDAD ESPECÍFICA DESARROLLADA]],
+    cell(fill: gris)[#text(weight: "bold", tracking: -0.02em)[EVIDENCIA O SOPORTE QUE SE ANEXA]],
+  ),
+  {% for evidencia in evidencias %}
+    [#text()[{{ loop.index }}]],
+    [#text()[{{ evidencia.requerimiento }}]],
+    [#text()[{{ evidencia.actividad_especifica_desarrollada }}]],
+    [#text()[#text(fill: blue)[#link("{{ evidencia.trazabilidad }}")[Link]]]],
+  {% endfor %}
+)
+
+#v(0.08cm)
+#text(style: "italic", fill: gris-texto)[Nota 1: Consulte las recomendaciones para las evidencias mínimas según la naturaleza del objeto (ver apartado al final de este documento) para identificar los soportes que puede anexar según el tipo de servicio.]
+#v(0.05cm)
+#text(style: "italic", fill: gris-texto)[Nota 2: Agregue tantas filas como obligaciones o actividades tenga el contrato. Las evidencias se relacionan aquí y se adjuntan como anexos al informe.]
+
+#v(0.12cm)
+
+// ============================================================
+// 3. APORTES A SEGURIDAD SOCIAL
+// ============================================================
+
+#titulo_seccion("3. APORTES A SEGURIDAD SOCIAL (persona natural)")
+#text(style: "italic")[Diligencie una fila por cada planilla del periodo reportado. El contratista persona jurídica no diligencia este cuadro: anexa el certificado de aportes suscrito por el revisor fiscal o el representante legal (Art. 50, Ley 789 de 2002).]
+
+#table(
+  columns: (0.8cm, 3.61cm, 2.5cm, 3.5cm, 3.38cm, 3.71cm),
+  rows: 0.92cm,
+  stroke: 0.5pt,
+  align: center + horizon,
+  header(
+    cell(fill: gris)[#align(center + horizon)[#text(weight: "bold")[N.º]]],
+    cell(fill: gris)[#align(center + horizon)[#text(weight: "bold")[MES(ES) COTIZADO(S)]]],
+    cell(fill: gris)[#align(center + horizon)[#text(weight: "bold")[IBC COTIZADO]]],
+    cell(fill: gris)[#align(center + horizon)[#text(weight: "bold")[N.º DE PLANILLA (PILA)]]],
+    cell(fill: gris)[#align(center + horizon)[#text(weight: "bold")[
+      FECHA DE PAGO
+      [DD/MM/AAAA]
+    ]]],
+    cell(fill: gris)[#align(center + horizon)[#text(weight: "bold")[VALOR TOTAL DE LA PLANILLA]]],
+  ),
+  {% for planilla in seguridad_social.planillas %}
+    [#text()[{{ loop.index }}]],
+    [#text()[{{ planilla.meses_cotizados }}]],
+    [#text()[#text("$"){{ planilla.ibc_cotizado | pesos }}]],
+    [#text()[{{ planilla.numero_planilla }}]],
+    [#text()[{{ planilla.fecha_pago }}]],
+    [#text()[#text("$"){{ planilla.valor_pagado | pesos }}]],
+  {% endfor %}
+)
+
+#v(0.15cm)
+
+// ============================================================
+// 4. DECLARACIÓN Y FIRMAS - PÁGINA 2
+// ============================================================
+
+#titulo_seccion("4. DECLARACIÓN Y FIRMAS")
+#text()[La firma del contratista y del supervisor acredita la veracidad de la información reportada y el cumplimiento de las obligaciones del periodo; sin ambas firmas no procede el trámite del pago.]
+
+#table(
+  columns: (7.74cm, 4.25cm, 5.75cm),
+  rows: (0.41cm, 1.06cm, 0.69cm, 4.75cm,
+         0.41cm, 1.06cm, 0.69cm, 2.44cm,
+         0.41cm, 1.06cm, 0.69cm, 2.44cm),
+  stroke: 0.5pt,
+  align: (horizon, left + horizon, left + horizon),
+
+  // CONTRATISTA
+  header(
+    cell(colspan: 3)[
+        #align(center + horizon)[
+          #text(size: 9pt, weight: "bold")[DECLARACIÓN Y FIRMAS POR PARTE CONTRATISTA]
+      ]
+    ]
+  ),
+  cell(rowspan: 3)[
+    #text()[
+      #par(justify: true)[
+        Manifiesto bajo la gravedad de juramento que los trabajos y/o actividades relacionadas en este formato fueron entregados en las condiciones, cantidades y especificaciones técnicas contratadas, que la información aquí consignada es veraz y que me encuentro al día en el pago de los aportes al Sistema de Seguridad Social Integral.
+      ]
+      #par(justify: true)[
+        Bajo la gravedad del juramento, que se entiende prestado con la suscripción del presente documento, manifiesto que los soportes de pago de aportes al Sistema de Seguridad Social Integral que se anexan al presente informe corresponden a los períodos durante los cuales se ejecutaron las actividades objeto del contrato celebrado con la Universidad Industrial de Santander y respecto de las obligaciones derivadas de dicho contrato.
+      ]
+      #par(justify: true)[
+        Así mismo, declaro que los citados soportes son veraces, completos y auténticos, y que fueron presentados para efectos de acreditar el cumplimiento de las obligaciones legales y contractuales a mi cargo.
+      ]
+    ]
+  ],
+  [#text(weight: "bold")[FIRMA]], [],
+  [#text(weight: "bold")[NOMBRE CONTRATISTA]], [{{ general.nombre_contratista }}],
+  [#text(weight: "bold")[CÉDULA / NIT]], [C.C. {{ firmas.numero_documento_nit_contratista | pesos }}],
+
+  // SUPERVISOR
+  header(
+    cell(colspan: 3)[
+        #align(center + horizon)[
+          #text(size: 9pt, weight: "bold")[DECLARACIÓN Y FIRMAS POR PARTE SUPERVISOR]
+      ]
+    ]
+  ),
+  cell(rowspan: 3)[
+    #text()[
+      #par(justify: true)[
+        Manifiesto bajo la gravedad de juramento Verificado el contenido del presente formato, las evidencias anexas y el pago de aportes al Sistema de Seguridad Social Integral.
+      ]
+    ]
+  ],
+  [#text(weight: "bold")[FIRMA]], {% if firmas.nombre_supervisor %}[]{% else %}"N/A"{% endif %},
+  [#text(weight: "bold")[NOMBRE SUPERVISOR]], [{{ firmas.nombre_supervisor or "N/A" }}],
+  [#text(weight: "bold")[CARGO]], [{{ firmas.cargo_supervisor or "N/A" }}],
+  
+  
+  // INTERVENTOR
+  header(
+    cell(colspan: 3)[
+        #align(center + horizon)[
+          #text(size: 9pt, weight: "bold")[DECLARACIÓN Y FIRMAS POR PARTE INTERVENTOR
+        ]
+      ]
+    ]
+  ),
+  cell(rowspan: 3)[
+    #text()[
+      #par(justify: true)[
+        En ejercicio de la interventoría del contrato, manifiesto bajo la gravedad de juramento que he verificado el contenido del presente informe, las evidencias anexas y el pago de los aportes al Sistema de Seguridad Social Integral, y que el contratista cumplió las obligaciones a su cargo durante el periodo reportado.
+      ]
+    ]
+  ],
+  [#text(weight: "bold")[FIRMA]], {% if firmas.nombre_interventor %}[]{% else %}"N/A"{% endif %},
+  [#text(weight: "bold")[NOMBRE / RAZÓN SOCIAL]], [{{ firmas.nombre_interventor or "N/A" }}],
+  [#text(weight: "bold")[CÉDULA / NIT]], [{{ firmas.cedula_nit_interventor or "N/A" }}],
+)
+
+// ============================================================
+// 5. RELACIÓN DE ANEXOS - PÁGINAS 3 Y 4
+// ============================================================
+
+#titulo_seccion("5. RELACIÓN DE ANEXOS DEL INFORME")
+#text()[Inserte en el recuadro el soporte relacionado en la columna «EVIDENCIA O SOPORTE QUE SE ANEXA» del numeral 2: registro fotográfico, pantallazo de los sistemas de información, correo o comunicación, acta, listado de asistencia, documento técnico, planilla u otro soporte de la actividad. Indique debajo la obligación o actividad que soporta, la fecha y el lugar o medio en que se produjo. Los soportes aportados deberán cumplir la normativa de protección de datos personales (Ley 1581 de 2012), en especial lo dispuesto en la Resolución N.° 1013 de 2026.]
+#v(0.12cm)
+
+{% for imagen in anexos.imagenes %}
+#table(
+  columns: 17.73cm,
+  stroke: 0.5pt,
+  cell(fill: gris)[#align(center)[#text(size: 9pt, weight: "bold")[ANEXO {{ loop.index }}]]],
+  cell[
+    #box(height: 4.85cm, width: 100%)[
+      {% if imagen %}
+        #align(center + horizon)[#image("{{ imagen }}", width: 16.8cm, height: 4.0cm, fit: "contain")]
+      {% else %}
+        #align(center + horizon)[#placeholder("Haga clic aquí e inserte la imagen o el documento del soporte (Insertar → Imágenes / Objeto).")]
+      {% endif %}
+    ]
+  ],
+)
+#v(0.18cm)
+{% if loop.index == 3 %}
+#pagebreak()
+{% endif %}
+{% endfor %}

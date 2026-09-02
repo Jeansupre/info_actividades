@@ -1,9 +1,9 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "required": ["encabezado", "objetivos", "evidencias", "gestion", "participacion_ceremonias", "firmas"],
+    "required": ["general", "objetivos", "evidencias", "gestion", "participacion_ceremonias", "firmas"],
     "properties": {
-        "encabezado": {
+        "general": {
             "type": "object",
             "description": "Información general del informe",
             "required": ["numero_informe", "numero_contrato", "nombre_contratista", "inicio_periodo", "fin_periodo"],
@@ -16,6 +16,18 @@
                 "numero_contrato": {
                     "type": "string",
                     "description": "Número del contrato"
+                },
+                "objeto_contrato": {
+                    "type": "string",
+                    "description": "Objeto del contrato, se debe copiar tal cual del contrato"
+                },
+                "valor_por_pagar": {
+                    "type": "number",
+                    "description": "Valor por pagar al contratista en el periodo del informe"
+                },
+                "porcentaje_pago_ejecutado": {
+                    "type": "string",
+                    "description": "Porcentaje del valor total del contrato que se ha ejecutado hasta la fecha del informe, ejemplo: 75%"
                 },
                 "nombre_contratista": {
                     "type": "string",
@@ -30,6 +42,25 @@
                     "type": "string",
                     "description": "Fecha de fin del periodo (dd/mm/yyyy)",
                     "pattern": "^\\d{2}/\\d{2}/\\d{4}$"
+                },
+                "fecha_elaboracion": {
+                    "type": "object",
+                    "description": "Fecha de elaboración del informe",
+                    "required": ["dia", "mes", "anio"],
+                    "properties": {
+                        "dia": {
+                            "type": "string",
+                            "description": "Día de la fecha de elaboración del informe"
+                        },
+                        "mes": {
+                            "type": "string",
+                            "description": "Mes de la fecha de elaboración del informe"
+                        },
+                        "anio": {
+                            "type": "string",
+                            "description": "Año de la fecha de elaboración del informe"
+                        }
+                    }
                 }
             }
         },
@@ -186,40 +217,76 @@
                 }
             }
         },
+        "seguridad_social": {
+            "type": "object",
+            "description": "Información de las planillas de seguridad social pagadas durante el periodo",
+            "properties": {
+                "planillas": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["meses_cotizados", "ibc_cotizado", "numero_planilla", "fecha_pago", "valor_pagado"],
+                        "properties": {
+                            "meses_cotizados": {
+                                "type": "string",
+                                "description": "Meses cotizados en la planilla (formato: MM YYYY), ejemplo: Agosto 2026"
+                            },
+                            "ibc_cotizado": {
+                                "type": "number",
+                                "description": "Ingreso Base de Cotización (IBC) cotizado en la planilla"
+                            },
+                            "numero_planilla": {
+                                "type": "number",
+                                "description": "Número de la planilla de seguridad social"
+                            },
+                            "fecha_pago": {
+                                "type": "string",
+                                "description": "Fecha de pago de la planilla (formato: dd/mm/yyyy)",
+                                "pattern": "^\\d{2}/\\d{2}/\\d{4}$"
+                            },
+                            "valor_pagado": {
+                                "type": "number",
+                                "description": "Valor total pagado en la planilla"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "firmas": {
             "type": "object",
             "description": "Información de las firmas requeridas para la validación del informe",
-            "required": ["numero_documento_contratista", "firma_contratista"],
+            "required": ["numero_documento_nit_contratista"],
             "properties": {
-                "numero_documento_contratista": {
+                "numero_documento_nit_contratista": {
                     "type": "integer",
-                    "description": "Número de documento del contratista"
+                    "description": "Número de documento o NIT del contratista"
                 },
-                "firma_contratista": {
-                    "type": "string",
-                    "description": "Ubicación de la imagen de la firma del contratista"
-                },
-                "nombre_lider_equipo": {
+                "nombre_supervisor": {
                     "type": "string",
                     "description": "Nombre completo del líder del equipo"
                 },
-                "nombre_supervisor_contrato": {
+                "cargo_supervisor": {
+                    "type": "string",
+                    "description": "Cargo del líder del equipo"
+                },
+                "nombre_interventor": {
                     "type": "string",
                     "description": "Nombre completo del supervisor del contrato"
+                },
+                "cedula_nit_interventor": {
+                    "type": "integer",
+                    "description": "Número de cédula o NIT del supervisor del contrato"
                 }
             }
         },
         "anexos": {
-            "type": "array",
+            "type": "object",
             "description": "En esta sección se incluyen evidencias complementarias, como registros fotográficos o capturas de pantalla, que soportan las actividades reportadas en el informe. \nSu incorporación es opcional y tiene como finalidad ampliar o ilustrar la información presentada, sin reemplazar la trazabilidad gestionada en las herramientas institucionales.",
-            "items": {
-                "type": "object",
-                "required": ["ubicacion"],
-                "properties": {
-                    "ubicacion": {
-                        "type": "string",
-                        "description": "Ruta de acceso relativa de la carpeta donde está almacenada la evidencia adicional, esta carpeta debe estar dentro del root del proyecto, en este caso la carpeta informes. \nSe recomienda guardar las carpetas de las imagenes o directamente las imagenes en la carpeta anexos (ejemplo: informes\\assets\\anexos, informes\\assets\\anexos\\2026-03\\)"
-                    }
+            "properties": {
+                "ubicacion": {
+                    "type": "string",
+                    "description": "Ruta de acceso relativa de la carpeta donde está almacenada la evidencia adicional, esta carpeta debe estar dentro del root del proyecto, en este caso la carpeta informes. \nSe recomienda guardar las carpetas de las imagenes o directamente las imagenes en la carpeta anexos (ejemplo: informes\\assets\\anexos, informes\\assets\\anexos\\2026-03\\)"
                 }
             }
         }

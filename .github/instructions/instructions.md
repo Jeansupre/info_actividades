@@ -2,9 +2,10 @@
 
 Este proyecto genera PDFs a partir de archivos YAML.
 
-# Flujo
+## Flujo
 
-## pre requisitos
+### pre requisitos
+
 - Estar en la carpeta raíz del proyecto.
 - Iniciar el entorno virtual con `source .venv/bin/activate` (Linux/Mac) o `.venv\Scripts\activate` (Windows).
 
@@ -19,7 +20,7 @@ Este proyecto genera PDFs a partir de archivos YAML.
 3. Generar PDF usando:
    python main.py generar <nombre_archivo>
 
-# Reglas importantes
+### Reglas importantes
 
 - Nunca inventar información.
 - Si un dato no existe en el informe, preguntar al usuario.
@@ -30,77 +31,80 @@ Este proyecto genera PDFs a partir de archivos YAML.
 - Los números que acompañan los prefiejos, según el tipo de evidencia, en la columna ID deben ser los mismos que el número de la HU o del merge request correspondiente.
 - En la tabla de trazabilidad no tengas encuenta los feats sueltos que no estén asociados a una HU o a un merge request, aunque hayan sido parte de las actividades del periodo.
 - En la tabla de trazabilidad debes poner todas las HUs indicadas en el informe.
+- Si en la propiedad "anexos"."ubicacion" se indica una ruta, se debe corroborar que la ruta exista y contenga los anexos. Se debe informar al usuario si la ruta no existe o no contiene anexos, para que el usuario pueda corregirlo.
 
-# Relación informe -> campos
+## Relación informe -> campos
 
 Los campos están documentados en schema.json, seguir las indicaciones allí para cada campo o preguntar si hay alguna duda.
 
-# Ejemplo correcto
-encabezado:
-  numero_informe: 3
-  numero_contrato: "18-2026123456"
-  nombre_contratista: "Jean Carlo Rodriguez Sanchez"
-  inicio_periodo: "06/04/2026"
-  fin_periodo: "06/05/2026"
+## Ejemplo correcto
+
+general:
+  numero_informe: 1
+  numero_contrato: 18-2026000001
+  nombre_contratista: Pepito Perez
+  objeto_contrato: Objetivo contrato
+  valor_por_pagar: 1000000
+  porcentaje_pago_ejecutado: "10%"
+  inicio_periodo: 01/01/2026
+  fin_periodo: 02/02/2026
+  fecha_elaboracion:
+    dia: "07"
+    mes: "09"
+    anio: "2026"
 objetivos:
-  descripcion: |
-    Durante el presente periodo se llevaron a cabo optimizaciones y refactorizaciones en el mecanismo de control del contador de intentos fallidos asociados al proceso de autenticación mediante OTP (One-Time Password). Estas mejoras incluyeron la revisión y ajuste de la lógica de gestión de credenciales, en respuesta a los lineamientos y observaciones surgidas en las reuniones técnicas del equipo.
-    
-    Adicionalmente, se diseñaron e implementaron nuevos endpoints para Gestión de Credenciales, orientados a la consulta eficiente de entidades preexistentes en el sistema, empleando algoritmos de coincidencia sobre los datos suministrados por el usuario. Para garantizar la confidencialidad y seguridad de la información, se aplicaron técnicas de ofuscación sobre los datos sensibles retornados en las respuestas de dichos endpoints.
-    
-    Como parte de las medidas de seguridad, se incorporó un mecanismo de bloqueo automático basado en el umbral de intentos fallidos durante la validación de códigos OTP en los flujos de creación de nuevas personas o entidades, mitigando así posibles ataques de fuerza bruta o intentos de acceso no autorizado.
-    
-    Finalmente, se desarrolló un endpoint especializado para la detección y notificación de posibles desincronizaciones horarias entre el servidor de autenticación y los dispositivos generadores de códigos OTP. Esta funcionalidad permite identificar y gestionar discrepancias temporales que puedan afectar la validez de los códigos dinámicos durante el proceso de inicio de sesión, mejorando la experiencia de usuario y la robustez del sistema de autenticación.
+  descripcion: Descripción de los actividades realizadas durante el periodo, incluyendo la implementación de nuevas funcionalidades, corrección de errores y soporte a usuarios. Se detallan las evidencias de trabajo completadas, así como la gestión de incidencias y bloqueos enfrentados.
 evidencias:
-  - id: HU-1474
-    tipo: Historia
-    requerimiento: Implementación de gestión de credenciales versionada con endpoints, validaciones y vistas frontend Detalles
-    estado: En curso
-    trazabilidad: https://chaquen.uis.edu.co/project/dgomezs-general-hu-transversales/us/1474
-  - id: HU-1496
-    tipo: Historia
-    requerimiento: Implementación de OTP para recuperación y validación de correo sin dependencia de identificadores internos
-    estado: En curso
-    trazabilidad: https://chaquen.uis.edu.co/project/dgomezs-general-hu-transversales/us/1496
-  - id: HU-1463
-    tipo: Historia
-    requerimiento: Ajustes en autenticación con código dinámico para tolerancia a desincronización horaria y mejora de experiencia de usuario Detalles
-    estado: Done
-    trazabilidad: https://chaquen.uis.edu.co/project/dgomezs-general-hu-transversales/us/1463
-  - id: HU-1469
-    tipo: Historia
-    requerimiento: Corrección de bugs backend en cambio de correo y carga de archivos (MDA) en producción
-    estado: Done
-    trazabilidad: https://chaquen.uis.edu.co/project/dgomezs-general-hu-transversales/us/1469
-  - id: TEST-1904
-    tipo: Devtest
-    requerimiento: Devtest merge request enhance translations for better clarity in user messages
-    estado: Done
-    trazabilidad: https://gitlab.uis.edu.co/rsi/core/core-frontend/-/merge_requests/1904
-  - id: BUG-466
-    tipo: Bug
-    requerimiento: Corrección de conteo de intentos fallidos en autenticación OTP
-    estado: Done
-    trazabilidad: https://gitlab.uis.edu.co/rsi/seguridad/seg-backend/-/merge_requests/466
-  - id: REF-467
-    tipo: Refactor
-    requerimiento: Reorganizar la lógica de autenticación para mejorar el flujo de verificación de usuario y manejo de errores
-    estado: Done
-    trazabilidad: https://gitlab.uis.edu.co/rsi/seguridad/seg-backend/-/merge_requests/467
+
+- id: HU-042
+  tipo: Historia
+  requerimiento: Módulo de pagos PSE - integración
+  actividad_especifica_desarrollada: Se implementó la integración del módulo de pagos PSE, permitiendo a los usuarios realizar transacciones de manera segura y eficiente. Se realizaron pruebas unitarias y de integración para garantizar la correcta funcionalidad del sistema.
+  estado: Done
+  trazabilidad: Link taiga
+- id: BUG-017
+  tipo: Bug
+  requerimiento: Error en validación de NIT
+  actividad_especifica_desarrollada: Se corrigió un error en la validación del NIT que impedía el registro de ciertos usuarios. Se realizaron pruebas para asegurar que la validación funcione correctamente en todos los casos.
+  estado: Done
+  trazabilidad: Link Gitlab
+- id: SOP-004
+  tipo: Soporte
+  requerimiento: Capacitación equipo financiero
+  actividad_especifica_desarrollada: Se brindó capacitación al equipo financiero sobre el uso del nuevo módulo de pagos PSE, incluyendo procedimientos de registro y resolución de problemas comunes.
+  estado: Done
+  trazabilidad: Link taiga
+- id: HU-666
+  tipo: Historia
+  requerimiento: Rediseño liquidador catedra
+  actividad_especifica_desarrollada: Se llevó a cabo el rediseño del liquidador de cátedra, mejorando la interfaz de usuario y optimizando los cálculos de liquidación. Se realizaron pruebas de usuario para validar la experiencia y funcionalidad.
+  estado: Done
+  trazabilidad: Link taiga
+- id: HU-123
+  tipo: Historia
+  requerimiento: Procesos en definitiva
+  actividad_especifica_desarrollada: Se implementaron mejoras en los procesos de actualización de información en la Hoja de Vida, permitiendo a los usuarios realizar cambios de manera más eficiente y con mayor control sobre la información ingresada.
+  estado: En curso
+  trazabilidad: Link taiga
 gestion:
   soportes_incidentes:
-    descripcion: |
-      Se brindó soporte a los reportes relacionados con el inicio de sesión utilizando códigos dinámicos (OTP).
+    descripcion: Descripción de los incidentes reportados y gestionados durante el periodo, incluyendo detalles sobre la naturaleza del incidente, las acciones tomadas para su resolución y el estado final del mismo. Se destacan los esfuerzos realizados para minimizar el impacto en los usuarios y garantizar la continuidad del servicio.
   deuda_refactorizacion:
-    descripcion: |
-      Se abordó la reducción de la deuda técnica acumulada en el módulo de autorregistro, realizando tareas de refactorización sobre componentes críticos previamente implementados en la gestión de credenciales. Estas acciones incluyeron la optimización de estructuras de código, la mejora de la mantenibilidad y la alineación con las mejores prácticas de desarrollo seguro y escalable.
+    descripcion: Descripción de la deuda técnica identificada durante el periodo, incluyendo áreas del código que requieren refactorización, mejoras en la arquitectura y optimización de procesos. Se detallan las acciones planificadas para abordar esta deuda y mejorar la calidad del software a largo plazo.
   bloqueos:
-    descripcion: "Durante el periodo evaluado no se identificaron bloqueos técnicos ni administrativos que afectaran el desarrollo o la entrega de los compromisos establecidos, permitiendo así el avance continuo de las actividades planificadas."
+    descripcion: Descripción de los bloqueos enfrentados durante el periodo, incluyendo problemas técnicos, dependencias externas y limitaciones de recursos. Se detallan las estrategias implementadas para superar estos bloqueos y asegurar la continuidad del desarrollo de las actividades.
 participacion_ceremonias:
-  descripcion: |
-    Se mantuvo una participación activa y constante en todas las ceremonias ágiles programadas, incluyendo las reuniones diarias (dailies) y sesiones extraordinarias convocadas para la resolución colaborativa de incidencias e imprevistos. Esta dinámica facilitó la comunicación efectiva, la toma de decisiones en tiempo real y el seguimiento oportuno de los objetivos del equipo.
+  descripcion: Descripción de la participación en ceremonias ágiles, incluyendo reuniones de planificación, revisiones de sprint y retrospectivas. Se destacan las contribuciones del equipo en la mejora continua de los procesos y la colaboración efectiva entre los miembros del equipo.
+seguridad_social:
+  planillas:
+  - meses_cotizados: Agosto 2026
+      ibc_cotizado: 1000000
+      numero_planilla: 123456789
+      fecha_pago: 30/08/2026
+      valor_pagado: 100000
 firmas:
-  numero_documento_contratista: 1005322413
-  firma_contratista: ""
-  nombre_supervisor_contrato: "Ing. Danny Felipe Vergel Paba"
-anexos: []
+  numero_documento_nit_contratista: 10000000
+  nombre_supervisor: Ing. Juan Perez
+  cargo_supervisor: Lider de equipo de desarrollo
+anexos:
+  ubicacion: "informes/assets/anexos/informe1"
