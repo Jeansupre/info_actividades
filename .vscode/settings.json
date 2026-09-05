@@ -1,6 +1,8 @@
 {
     "yaml.schemas": {
-        "./informes/schema/informe.schema.json": ["data/*.yaml", "templates/*.yaml"]
+        "./informes/schema/informe.dtic.schema.json": ["data/formato_dtic/*.yaml", "templates/defaultDTIC.yaml"],
+        "./informes/schema/informe.fco76.schema.json": ["data/formato_fco76/*.yaml", "templates/defaultFCO76.yaml"]
+
     },
     "python.analysis.extraPaths": [
         "./informes"

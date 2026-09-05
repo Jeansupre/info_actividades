@@ -53,7 +53,7 @@ def generar_informe(nombre_yaml: str):
     template = env.get_template("informe_fco76.typ.j2")
 
     # Cargar YAML
-    with open(f"informes/data/{nombre_yaml}.yaml", encoding="utf-8") as f:
+    with open(f"informes/data/formato_fco76/{nombre_yaml}.yaml", encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
     #Añadir imágenes de anexos al contexto
@@ -61,9 +61,6 @@ def generar_informe(nombre_yaml: str):
     ruta = anexos["ubicacion"]
     if ruta:
         anexos["imagenes"] = obtener_imagenes(ruta, OUTPUT_DIR)
-
-    print(anexos)
-    print(data["anexos"]["imagenes"])
 
     # Renderizar Typst
     typ_content = template.render(data)

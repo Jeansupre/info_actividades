@@ -6,8 +6,8 @@ import subprocess
 
 from informes.src.test_generar import generar_informe
 
-TEMPLATE_PATH = "informes/templates/default.yaml"
-DATA_FOLDER = "informes/data"
+TEMPLATE_PATH = "informes/templates/defaultFCO76.yaml"
+DATA_FOLDER = "informes/data/formato_fco76"
 
 def crear_yaml(nombre: str):
     """

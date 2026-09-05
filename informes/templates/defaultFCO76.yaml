@@ -1,0 +1,33 @@
+general:
+  numero_informe: 1
+  numero_contrato: 18-2026000001
+  nombre_contratista: Pepito Perez
+  objeto_contrato: Objetivo contrato
+  valor_por_pagar: 1000000
+  porcentaje_pago_ejecutado: "10%"
+  inicio_periodo: 01/01/2026
+  fin_periodo: 02/02/2026
+  fecha_elaboracion:
+    dia: "07"
+    mes: "09"
+    anio: "2026"
+evidencias:
+  - actividad_contractual: Módulo de pagos PSE - integración
+    actividad_especifica_desarrollada: Se implementó la integración del módulo de pagos PSE, permitiendo a los usuarios realizar transacciones de manera segura y eficiente. Se realizaron pruebas unitarias y de integración para garantizar la correcta funcionalidad del sistema.
+    trazabilidad: Link taiga
+  - actividad_contractual: Módulo de pagos PSE - integración
+    actividad_especifica_desarrollada: Se implementó la integración del módulo de pagos PSE, permitiendo a los usuarios realizar transacciones de manera segura y eficiente. Se realizaron pruebas unitarias y de integración para garantizar la correcta funcionalidad del sistema.
+    trazabilidad: Link taiga
+seguridad_social:
+  planillas:
+    - meses_cotizados: Agosto 2026
+      ibc_cotizado: 1000000
+      numero_planilla: 123456789
+      fecha_pago: 30/08/2026
+      valor_pagado: 100000
+firmas:
+  numero_documento_nit_contratista: 10000000
+  nombre_supervisor: Ing. Juan Perez
+  cargo_supervisor: Lider de equipo de desarrollo
+anexos:
+  ubicacion: informes\assets\anexos

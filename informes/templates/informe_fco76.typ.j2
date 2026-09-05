@@ -125,13 +125,18 @@
     cell(fill: gris)[#text(weight: "bold")[N.º]],
     cell(fill: gris)[#text(weight: "bold")[ACTIVIDAD CONTRACTUAL]],
     cell(fill: gris)[#text(weight: "bold")[ACTIVIDAD ESPECÍFICA DESARROLLADA]],
-    cell(fill: gris)[#text(weight: "bold", tracking: -0.02em)[EVIDENCIA O SOPORTE QUE SE ANEXA]],
+    cell(fill: gris)[#text(weight: "bold")[EVIDENCIA O SOPORTE QUE SE ANEXA]],
   ),
   {% for evidencia in evidencias %}
     [#text()[{{ loop.index }}]],
-    [#text()[{{ evidencia.requerimiento }}]],
+    [#text()[{{ evidencia.actividad_contractual }}]],
     [#text()[{{ evidencia.actividad_especifica_desarrollada }}]],
-    [#text()[#text(fill: blue)[#link("{{ evidencia.trazabilidad }}")[Link]]]],
+    [#text()[#text(fill: blue)[
+      {% if evidencia.trazabilidad %}
+      #link("{{ evidencia.trazabilidad }}")[Link]
+      {% else %}
+      {% endif %}
+    ]]],
   {% endfor %}
 )
 
@@ -286,3 +291,16 @@
 #pagebreak()
 {% endif %}
 {% endfor %}
+
+{% if anexos.imagenes %}
+{% else %}
+#table(
+  columns: 17.73cm,
+  stroke: 0.5pt,
+  cell(fill: gris)[#align(center)[#text(size: 9pt, weight: "bold")[ANEXO 1]]],
+  cell[
+    #box(height: 4.85cm, width: 100%)[
+      #align(center + horizon)[#placeholder("Haga clic aquí e inserte la imagen o el documento del soporte (Insertar → Imágenes / Objeto).")]
+    ]
+  ],
+){% endif %}

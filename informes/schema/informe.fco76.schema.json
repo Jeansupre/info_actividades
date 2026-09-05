@@ -1,12 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "required": ["general", "objetivos", "evidencias", "gestion", "participacion_ceremonias", "firmas"],
+    "required": ["general", "evidencias", "seguridad_social", "firmas"],
     "properties": {
         "general": {
             "type": "object",
             "description": "Información general del informe",
-            "required": ["numero_informe", "numero_contrato", "nombre_contratista", "inicio_periodo", "fin_periodo"],
+            "required": ["numero_informe", "numero_contrato", "objeto_contrato", "valor_por_pagar", "porcentaje_pago_ejecutado", "nombre_contratista", "inicio_periodo", "fin_periodo", "fecha_elaboracion"],
             "properties": {
                 "numero_informe": {
                     "type": "integer",
@@ -64,156 +64,25 @@
                 }
             }
         },
-        "objetivos": {
-            "type": "object",
-            "description": "¿Por qué esta sección? \nEl objetivo es entregar valor al usuario y al negocio, no acumular tareas completadas. Permitir comprender el impacto real del sprint sin necesidad de revisar cada tarea individualmente. Reemplazar listas de actividades por comunicación de resultado. \nEquivale a: Actividades realizadas (Historias de Usuario) y las descripciones de actividades de cada HU",
-            "required": ["descripcion"],
-            "properties": {
-                "descripcion": {
-                    "type": "string",
-                    "description": "Descripción de los objetivos y resultados alcanzados durante el periodo del informe"
-                }
-            }
-        },
         "evidencias": {
             "type": "array",
             "description": "¿Por qué esta sección? \nProvee trazabilidad sin duplicar información. Cada ítem contiene un único enlace a Taiga donde vive toda la evidencia: código, pruebas, revisiones de código y aprobaciones. \nDefinition of Done en RSI: Código revisado (MR aprobado) - Pruebas unitarias pasando - Sin issues críticos en análisis estático - Desplegado en ambiente de pruebas - Aprobado por el equipo. \nUn ítem marcado como “Done” cumple TODOS estos criterios. \nSolo se puede reportar una historia por informe, preferiblemente cuando esté finalizada.",
             "items": {
                 "type": "object",
-                "required": ["id", "tipo", "requerimiento", "estado", "trazabilidad"],
+                "required": ["actividad_contractual", "actividad_especifica_desarrollada"],
                 "properties": {
-                    "id": {
+                    "actividad_contractual": {
                         "type": "string",
-                        "description": "Identificador de la actividad.  \nLos formatos válidos son: HU-XXX para Historias de Usuario, BUG-XXX para Bugs, SOP-XXX para Soporte (donde XXX es un número secuencial)"
+                        "description": "Actividad contractual asociada a la evidencia. Estas actividades son las que están en el contrato."
                     },
-                    "tipo": {
+                    "actividad_especifica_desarrollada": {
                         "type": "string",
-                        "enum": ["Historia", "Bug", "Soporte", "Devtest", "Refactor"],
-                        "description": "Tipo de actividad"
-                    },
-                    "requerimiento": {
-                        "type": "string",
-                        "description": "Requerimiento asociado a la actividad"
-                    },
-                    "estado": {
-                        "type": "string",
-                        "enum": ["Done", "En curso"],
-                        "description": "Estado actual de la actividad"
+                        "description": "Descripción de la actividad específica desarrollada durante el periodo, debe ser un resúmen técnico que evidencie claramente lo desarrollado."
                     },
                     "trazabilidad": {
                         "type": "string",
-                        "description": "Link a documentación (Taiga, GitLab, etc.)"
+                        "description": "Link a documentación (Taiga, GitLab, Imagen de anexo, etc.)"
                     }
-                },
-                "allOf": [
-                    {
-                        "if": {
-                            "properties": { "tipo": { "const": "Historia" } }
-                        },
-                        "then": {
-                            "properties": {
-                                "id": {
-                                "pattern": "^HU-\\d+"
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "if": {
-                            "properties": { "tipo": { "const": "Bug" } }
-                        },
-                        "then": {
-                            "properties": {
-                                "id": {
-                                "pattern": "^BUG-\\d+"
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "if": {
-                            "properties": { "tipo": { "const": "Soporte" } }
-                        },
-                            "then": {
-                            "properties": {
-                                "id": {
-                                "pattern": "^SOP-\\d+"
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "if": {
-                            "properties": { "tipo": { "const": "Devtest" } }
-                        },
-                        "then": {
-                            "properties": {
-                                "id": {
-                                    "pattern": "^TEST-\\d+"
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "if": {
-                            "properties": { "tipo": { "const": "Refactor" } }
-                        },
-                        "then": {
-                            "properties": {
-                                "id": {
-                                    "pattern": "^REF-\\d+"
-                                }
-                            }
-                        }
-                    }
-                ]
-            }
-        },
-        "gestion": {
-            "type": "object",
-            "description": "¿Por qué esta sección? \nEl trabajo no planificado (soporte, bugs, deuda técnica) impacta directamente la velocidad del equipo.",
-            "required": ["soportes_incidentes", "deuda_refactorizacion", "bloqueos"],
-            "properties": {
-                "soportes_incidentes": {
-                    "type": "object",
-                    "description": "Describa brevemente incidentes atendidos, su criticidad y resolución. \nEquivale a: Soporte, bugs, tickets e ítems, resumen agregado por tipo de incidente e impacto",
-                    "properties": {
-                        "descripcion": {
-                            "type": "string",
-                            "description": "Descripción de los soportes e incidentes gestionados"
-                        }
-                    }
-                },
-                "deuda_refactorizacion": {
-                    "type": "object",
-                    "description": "Trabajo técnico interno realizado (sin ser visible directamente en funcionalidades). \nImplícitamente incluido en Actividades de desarrollo (1) y DevTest (2)\nAhora se hace visible el trabajo técnico interno, que antes no se reportaba claramente \nPermite justificar esfuerzo que no genera funcionalidad directa",
-                    "properties": {
-                        "descripcion": {
-                            "type": "string",
-                            "description": "Descripción de la deuda tecnica o de la refactorización"
-                        }
-                    }
-                },
-                "bloqueos": {
-                    "type": "object",
-                    "description": "Bloqueos que afectaron la velocidad del equipo y cómo se resolvieron (o permanecen activos). \nMencionado indirectamente en daily y descripciones de actividades. \nSe documentan explícitamente para analizar impacto en velocidad y mejorar planificación futura",
-                    "properties": {
-                        "descripcion": {
-                            "type": "string",
-                            "description": "Descripción de los bloqueos relevantes identificados"
-                        }
-                    }
-                }
-            }
-        },
-        "participacion_ceremonias": {
-            "type": "object",
-            "description": "¿Por qué esta sección? \nLa participación activa en ceremonias es clave para la colaboración y alineación del equipo. \nPermite evidenciar el compromiso del contratista con las prácticas ágiles y su contribución a la dinámica del equipo.",
-            "required": ["descripcion"],
-            "properties": {
-                "descripcion": {
-                    "type": "string",
-                    "description": "Descripción de la participación en ceremonias ágiles (daily, sprint planning, retrospectives, etc.) y su impacto en el equipo"
                 }
             }
         },
