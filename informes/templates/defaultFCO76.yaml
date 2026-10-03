@@ -16,10 +16,12 @@ evidencias:
     detalles_evidencia:
       - actividad_especifica_desarrollada: Se implementó la integración del módulo de pagos PSE, permitiendo a los usuarios realizar transacciones de manera segura y eficiente. Se realizaron pruebas unitarias y de integración para garantizar la correcta funcionalidad del sistema.
         trazabilidad: Nombre del anexo o link a la evidencia
+        anexo: 1
   - actividad_contractual: Mantenimiento de software
     detalles_evidencia:
       - actividad_especifica_desarrollada: Se realizó la actualización del sistema de gestión de usuarios, corrigiendo errores reportados por los usuarios y mejorando la experiencia de navegación. Se aplicaron parches de seguridad y se optimizó el rendimiento del sistema.
         trazabilidad: Nombre del anexo o link a la evidencia
+        anexo: 2
 seguridad_social:
   planillas:
     - meses_cotizados: Agosto 2026

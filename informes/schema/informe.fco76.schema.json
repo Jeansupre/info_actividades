@@ -89,6 +89,10 @@
                                 "trazabilidad": {
                                     "type": "string",
                                     "description": "Link a documentación, Taiga, GitLab, imagen de anexo, etc."
+                                },
+                                "anexo": {
+                                    "type": "number",
+                                    "description": "Numero del anexo, si lo tiene."
                                 }
                             }
                         }

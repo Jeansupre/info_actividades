@@ -135,7 +135,9 @@
       [#text()[#text(fill: blue)[
         {% if detalle.trazabilidad %}
         #link("{{ detalle.trazabilidad }}")[Link]
-        {% else %}
+        {% endif %}
+        {% if detalle.anexo %}
+        #link(<Anexo-{{ detalle.anexo }}>)[Anexo {{ detalle.anexo }}]
         {% endif %}
       ]]],
     {% endfor %}
@@ -277,7 +279,7 @@
 #table(
   columns: 17.73cm,
   stroke: 0.5pt,
-  cell(fill: gris)[#align(center)[#text(size: 9pt, weight: "bold")[ANEXO {{ loop.index }}]]],
+  cell(fill: gris)[#align(center)[#text(size: 9pt, weight: "bold")[ANEXO {{ loop.index }}]#label("Anexo-{{ loop.index }}")]],
   cell[
     #box(height: 4.85cm, width: 100%)[
       {% if imagen %}
