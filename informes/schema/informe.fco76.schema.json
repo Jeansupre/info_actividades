@@ -66,22 +66,32 @@
         },
         "evidencias": {
             "type": "array",
-            "description": "¿Por qué esta sección? \nProvee trazabilidad sin duplicar información. Cada ítem contiene un único enlace a Taiga donde vive toda la evidencia: código, pruebas, revisiones de código y aprobaciones. \nDefinition of Done en RSI: Código revisado (MR aprobado) - Pruebas unitarias pasando - Sin issues críticos en análisis estático - Desplegado en ambiente de pruebas - Aprobado por el equipo. \nUn ítem marcado como “Done” cumple TODOS estos criterios. \nSolo se puede reportar una historia por informe, preferiblemente cuando esté finalizada.",
+            "description": "Evidencias de las actividades contractuales desarrolladas durante el periodo.",
             "items": {
                 "type": "object",
-                "required": ["actividad_contractual", "actividad_especifica_desarrollada"],
+                "required": ["actividad_contractual", "detalles_evidencia"],
                 "properties": {
                     "actividad_contractual": {
                         "type": "string",
-                        "description": "Actividad contractual asociada a la evidencia. Estas actividades son las que están en el contrato."
+                        "description": "Actividad contractual asociada a la evidencia."
                     },
-                    "actividad_especifica_desarrollada": {
-                        "type": "string",
-                        "description": "Descripción de la actividad específica desarrollada durante el periodo, debe ser un resúmen técnico que evidencie claramente lo desarrollado."
-                    },
-                    "trazabilidad": {
-                        "type": "string",
-                        "description": "Link a documentación (Taiga, GitLab, Imagen de anexo, etc.)"
+                    "detalles_evidencia": {
+                        "type": "array",
+                        "description": "Lista de evidencias que soportan la actividad contractual.",
+                        "items": {
+                            "type": "object",
+                            "required": ["actividad_especifica_desarrollada"],
+                            "properties": {
+                                "actividad_especifica_desarrollada": {
+                                    "type": "string",
+                                    "description": "Descripción de la actividad específica desarrollada durante el periodo."
+                                },
+                                "trazabilidad": {
+                                    "type": "string",
+                                    "description": "Link a documentación, Taiga, GitLab, imagen de anexo, etc."
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -128,15 +128,17 @@
     cell(fill: gris)[#text(weight: "bold")[EVIDENCIA O SOPORTE QUE SE ANEXA]],
   ),
   {% for evidencia in evidencias %}
-    [#text()[{{ loop.index }}]],
-    [#text()[{{ evidencia.actividad_contractual }}]],
-    [#text()[{{ evidencia.actividad_especifica_desarrollada }}]],
-    [#text()[#text(fill: blue)[
-      {% if evidencia.trazabilidad %}
-      #link("{{ evidencia.trazabilidad }}")[Link]
-      {% else %}
-      {% endif %}
-    ]]],
+    cell(rowspan: {{ evidencia.detalles_evidencia | length }})[#text()[{{ loop.index }}]],
+    cell(rowspan: {{ evidencia.detalles_evidencia | length }})[#text()[{{ evidencia.actividad_contractual }}]],
+    {% for detalle in evidencia.detalles_evidencia %}
+      [#text()[{{ detalle.actividad_especifica_desarrollada }}]],
+      [#text()[#text(fill: blue)[
+        {% if detalle.trazabilidad %}
+        #link("{{ detalle.trazabilidad }}")[Link]
+        {% else %}
+        {% endif %}
+      ]]],
+    {% endfor %}
   {% endfor %}
 )
 
