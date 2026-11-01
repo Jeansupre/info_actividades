@@ -31,6 +31,7 @@ Este proyecto genera PDFs a partir de archivos YAML.
 - Los campos deben cumplir con el schema.json.
 - Mantener fechas en formato DD-MM-YYYY.
 - Los resúmenes deben ser técnicos.
+- Si en las actividades algún item dice Revisar anexo, se debe añadir la propiedad anexo con el número del anexo correspondiente, estos números son secuenciales y empiezan en 1.
 - En la tabla de trazabilidad, en la columna de Actividad Contratual, debes poner la actividad contractual que mejor describa la actividad específica desarrollada.
 - En la tabla de trazabilidad no tengas encuenta los feats sueltos que no estén asociados a una HU o a un merge request, aunque hayan sido parte de las actividades del periodo.
 - En la tabla de trazabilidad debes poner todas las HUs indicadas en el informe.
@@ -58,12 +59,16 @@ general:
     anio: "2026"
 evidencias:
 
-- actividad_contractual: Módulo de pagos PSE - integración
-  actividad_especifica_desarrollada: Se implementó la integración del módulo de pagos PSE, permitiendo a los usuarios realizar transacciones de manera segura y eficiente. Se realizaron pruebas unitarias y de integración para garantizar la correcta funcionalidad del sistema.
-  trazabilidad: Link taiga
-- actividad_contractual: Módulo de pagos PSE - integración
-  actividad_especifica_desarrollada: Se implementó la integración del módulo de pagos PSE, permitiendo a los usuarios realizar transacciones de manera segura y eficiente. Se realizaron pruebas unitarias y de integración para garantizar la correcta funcionalidad del sistema.
-  trazabilidad: Link taiga
+- actividad_contractual: Desarrollo de software
+    detalles_evidencia:
+      - actividad_especifica_desarrollada: Se implementó la integración del módulo de pagos PSE, permitiendo a los usuarios realizar transacciones de manera segura y eficiente. Se realizaron pruebas unitarias y de integración para garantizar la correcta funcionalidad del sistema.
+        trazabilidad: Nombre del anexo o link a la evidencia
+        anexo: 1
+- actividad_contractual: Mantenimiento de software
+    detalles_evidencia:
+      - actividad_especifica_desarrollada: Se realizó la actualización del sistema de gestión de usuarios, corrigiendo errores reportados por los usuarios y mejorando la experiencia de navegación. Se aplicaron parches de seguridad y se optimizó el rendimiento del sistema.
+      trazabilidad: Nombre del anexo o link a la evidencia
+      anexo: 2
 seguridad_social:
   planillas:
   - meses_cotizados: Agosto 2026

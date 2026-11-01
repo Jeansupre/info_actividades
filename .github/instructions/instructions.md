@@ -34,6 +34,9 @@ Este proyecto genera PDFs a partir de archivos YAML.
 - En la tabla de trazabilidad, en la columna de Actividad Contratual, debes poner la actividad contractual que mejor describa la actividad específica desarrollada.
 - En la tabla de trazabilidad no tengas encuenta los feats sueltos que no estén asociados a una HU o a un merge request, aunque hayan sido parte de las actividades del periodo.
 - En la tabla de trazabilidad debes poner todas las HUs indicadas en el informe.
+- Organizar siempre los bloques de `evidencias` en el mismo orden de las actividades contractuales del contrato: desarrollar e implementar, realizar DevTest/pruebas, identificar y corregir hallazgos o brindar soporte, y asistir a ceremonias ágiles.
+- Asignar la propiedad `anexo` únicamente a las actividades cuyo registro del periodo indique explícitamente "Revisar anexo". Numerar esos anexos según el orden en que aparecen en el YAML, empezando en 1, sin repetir números y sin considerar ni inferir el contenido o el orden de los archivos de la carpeta de anexos.
+- Si una actividad se mueve a otra actividad contractual, conservar sus datos y su trazabilidad; si no tiene `anexo`, el movimiento no debe alterar la numeración de los anexos posteriores.
 - Si en la propiedad "anexos"."ubicacion" se indica una ruta, se debe corroborar que la ruta exista y contenga los anexos. Se debe informar al usuario si la ruta no existe o no contiene anexos, para que el usuario pueda corregirlo.
 
 ## Relación informe -> campos

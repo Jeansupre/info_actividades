@@ -3,6 +3,7 @@ import os
 import subprocess
 from jinja2 import Environment, FileSystemLoader
 import shutil
+import re
 
 import os
 
@@ -23,6 +24,11 @@ def formato_pesos(valor):
 
     return f"{valor:,}".replace(",", ".")
 
+def numero_anexo(path):
+    nombre = os.path.basename(path)
+    match = re.search(r'Anexo(\d+)', nombre, re.IGNORECASE)
+    return int(match.group(1)) if match else float('inf')
+
 def obtener_imagenes(ruta, output_dir):
     extensiones = (".png", ".jpg", ".jpeg")
     imagenes = []
@@ -35,6 +41,9 @@ def obtener_imagenes(ruta, output_dir):
                 imagenes.append(rel_path.replace("\\", "/")) 
             except Exception as e:
                 print(f"Error al procesar la imagen {f}: {e}")
+    # Ordenar por el número de Anexo
+    imagenes.sort(key=numero_anexo)
+
     return imagenes
 
 def generar_informe(nombre_yaml: str):
@@ -60,7 +69,9 @@ def generar_informe(nombre_yaml: str):
     anexos = data.get("anexos", {})
     ruta = anexos["ubicacion"]
     if ruta:
-        anexos["imagenes"] = obtener_imagenes(ruta, OUTPUT_DIR)
+        imagenes = obtener_imagenes(ruta, OUTPUT_DIR)
+        print(f"Imágenes encontradas: {imagenes}")
+        anexos["imagenes"] = imagenes
 
     # Renderizar Typst
     typ_content = template.render(data)
