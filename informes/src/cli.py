@@ -4,6 +4,11 @@ import shutil
 import os
 import subprocess
 
+from informes.src.portal import (
+    PortalAuthenticationError,
+    PortalRequestError,
+    autenticar_interactivamente,
+)
 from informes.src.test_generar import generar_informe
 
 TEMPLATE_PATH = "informes/templates/defaultFCO76.yaml"
@@ -75,6 +80,10 @@ def build_parser() -> argparse.ArgumentParser:
     # Comando generar
     comando_generar = subparsers.add_parser("generar", help="Generar PDF a partir del YAML")
     comando_generar.add_argument("nombre", help="Nombre del archivo YAML a usar (ej: 2026-03)")
+    subparsers.add_parser(
+        "autenticar",
+        help="Probar la autenticación en el portal sin guardar el token",
+    )
 
     return parser
 
@@ -86,5 +95,12 @@ def run():
         crear_yaml(args.nombre)
     elif args.command == "generar":
         generar_informe(args.nombre)
+    elif args.command == "autenticar":
+        try:
+            session = autenticar_interactivamente()
+            session.obtener_datos_usuario()
+        except (PortalAuthenticationError, PortalRequestError, ValueError) as error:
+            parser.error(str(error))
+        print("✅ Autenticación exitosa.")
     else:
         parser.print_help()

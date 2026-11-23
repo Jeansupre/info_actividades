@@ -148,6 +148,21 @@ Salida:
 informes/output/<nombre-del-informe>.pdf
 ```
 
+### 🔐 Probar autenticación del portal
+
+La autenticación solicita las credenciales de forma interactiva. La contraseña
+se usa únicamente para realizar el login y no se almacena:
+
+```powershell
+python main.py autenticar
+```
+
+El token se mantiene únicamente en la instancia `PortalSession`. Después del
+login, la sesión consulta el endpoint de usuario usando el encabezado
+`Authentication: Bearer <token>` y guarda `idPersona` e `idUsuario` en esa
+misma instancia para las siguientes peticiones. `PortalSession` no es un
+singleton: cada autenticación crea una sesión independiente.
+
 ---
 
 ## 📝 Estructura del YAML
